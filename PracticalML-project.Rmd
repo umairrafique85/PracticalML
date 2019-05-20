@@ -65,7 +65,7 @@ df_testData <- df_testData[,-1]
 
 ## Training our model
 
-To train our model, we will first split the training data into two sets: Training, and cross-validation, and will name them train and test, respectively. After that we will first train a random forest on our data, followed by a xgboost, and see which one performs best.
+To train our model, we will first split the training data into two sets: Training, and cross-validation, and will name them train and test, respectively. After that we will first train a random forest on our data, followed by a stochastic gradient boosting machine, and see which one performs best.
 
 ```{r}
 inTrain <- createDataPartition(df_trainData$classe, p = 0.7, list = FALSE)
@@ -74,17 +74,25 @@ test <- df_trainData[-inTrain, ]
 ```
 
 ### Random Forest
-```{r}
+```{r cache=TRUE}
 mdl_rf <- train(classe ~ ., method = "rf", data = train)
 mdl_rf
 confusionMatrix(test$classe, predict(mdl_rf, test))
 ```
 
-### XGBoost
+The Random Forest model gives an very high prediction accuracy of 99.9% on the validation set, with similar scores for sensitivity, specificity, positive predictive value and negative predictive value as well. We can expect similar accuracy in the final test set as we didn't tune the parameters using the validation set at all. We can also look at the most important variables in our model for predicting `classe`.
+
 ```{r}
-mdl_xgb <- train(classe ~ ., method = "xgboost", data = train)
-mdl_xgb
-confusionMatrix(test$classe, predict(mdl_xgb, test))
+varImp(mdl_rf)
 ```
+
+### Gradient Boosting Machine
+```{r cache=TRUE, results=FALSE}
+mdl_gbm <- train(classe ~ ., method = "gbm", data = train)
+mdl_gbm
+confusionMatrix(test$classe, predict(mdl_gbm, test))
+```
+
+The resulting accuracy from a stochastic gradient boosting machine is very similar to the random forest at 99.8%. Since we didn't use the validation set to tune our model, we can expect similar accuracy on the test data.
 
 

@@ -28,6 +28,10 @@ mdl_rf
 confusionMatrix(test$classe, predict(mdl_rf, test))
 save(mdl_rf, file = "mdl_rf.RData")
 
+mdl_gbm <- train(classe ~ ., method = "gbm", data = train)
+mdl_gbm
+confusionMatrix(test$classe, predict(mdl_gbm, test))
+
 mdl_xgb <- train(classe ~ ., method = "xgboost", data = train)
 mdl_xgb
 confusionMatrix(test$classe, predict(mdl_xgb, test))
