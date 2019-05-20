@@ -23,12 +23,15 @@ inTrain <- createDataPartition(df_trainData$classe, p = 0.7, list = FALSE)
 train <- df_trainData[inTrain, ]
 test <- df_trainData[-inTrain, ]
 
+
 mdl_rf <- train(classe ~ ., method = "rf", data = train)
 mdl_rf
 confusionMatrix(test$classe, predict(mdl_rf, test))
 save(mdl_rf, file = "mdl_rf.RData")
 
-mdl_xgb <- train(classe ~ ., method = "xgbDART", data = train)
-mdl_xgb
+mdl_gbm <- train(classe ~ ., method = "gbm", data = train)
+mdl_gbm
+confusionMatrix(test$classe, predict(mdl_gbm, test))
+
 confusionMatrix(test$classe, predict(mdl_xgb, test))
 save(mdl_xgb, file = "mdl_xgb.RData")
