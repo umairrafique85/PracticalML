@@ -28,7 +28,7 @@ mdl_rf
 confusionMatrix(test$classe, predict(mdl_rf, test))
 save(mdl_rf, file = "mdl_rf.RData")
 
-mdl_xgb <- train(classe ~ ., method = "xgboost", data = train)
+mdl_xgb <- train(classe ~ ., method = "xgbDART", data = train)
 mdl_xgb
 confusionMatrix(test$classe, predict(mdl_xgb, test))
 save(mdl_xgb, file = "mdl_xgb.RData")
