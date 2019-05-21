@@ -23,6 +23,9 @@ inTrain <- createDataPartition(df_trainData$classe, p = 0.7, list = FALSE)
 train <- df_trainData[inTrain, ]
 test <- df_trainData[-inTrain, ]
 
+library(doParallel)
+cl <- makePSOCKcluster(4)
+registerDoParallel(cl)
 
 mdl_rf <- train(classe ~ ., method = "rf", data = train)
 mdl_rf
